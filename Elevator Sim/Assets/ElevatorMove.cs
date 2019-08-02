@@ -6,6 +6,8 @@ using UnityEngine;
 public class ElevatorMove : MonoBehaviour
 {
     // Start is called before the first frame update
+    public GameObject person;
+
     void Start()
     {
 
@@ -86,6 +88,7 @@ public class ElevatorMove : MonoBehaviour
                 velocity = 0;
                 transform.position = new Vector2(transform.position.x, targetFloor);
                 stopping = false;
+                (person.GetComponent("PersonController") as PersonController).arriveAtFloor(targetFloor, gameObject);
             }
         }
 
