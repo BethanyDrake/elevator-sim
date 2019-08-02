@@ -44,10 +44,10 @@ public class ElevatorMove : MonoBehaviour
         }
 
         if (movingUp && velocity < topSpeed) {
-            velocity += acceleration;
+            velocity += acceleration * Time.deltaTime;
         }
         if (movingDown && velocity > -topSpeed) {
-            velocity -= acceleration;
+            velocity -= acceleration * Time.deltaTime;
         }
 
 
@@ -59,8 +59,8 @@ public class ElevatorMove : MonoBehaviour
             calculatedTargetFloor = false;
         }
         if (stopping && tooFast) {
-            if (velocity > topSpeed/2) velocity -= acceleration;
-            else if (velocity < -topSpeed/2) velocity += acceleration;
+            if (velocity > topSpeed/2) velocity -= acceleration * Time.deltaTime;
+            else if (velocity < -topSpeed/2) velocity += acceleration * Time.deltaTime;
             else {
                 tooFast = false;
             }
@@ -90,7 +90,7 @@ public class ElevatorMove : MonoBehaviour
         }
 
         if (velocity != 0) {
-            transform.position = new Vector2(transform.position.x, transform.position.y + velocity);
+            transform.position = new Vector2(transform.position.x, transform.position.y + velocity * Time.deltaTime);
         }
 
     }
