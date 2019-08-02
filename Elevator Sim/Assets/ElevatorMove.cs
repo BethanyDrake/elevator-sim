@@ -6,7 +6,7 @@ using UnityEngine;
 public class ElevatorMove : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GameObject person;
+    //public GameObject person;
 
     void Start()
     {
@@ -25,6 +25,11 @@ public class ElevatorMove : MonoBehaviour
     public float targetFloor;
     public bool tooFast = false;
     public bool calculatedTargetFloor;
+    public List<PersonController> people = new List<PersonController>();
+
+    public void AddPerson(GameObject person) {
+       people.Add(person.GetComponent("PersonController") as PersonController);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -88,7 +93,9 @@ public class ElevatorMove : MonoBehaviour
                 velocity = 0;
                 transform.position = new Vector2(transform.position.x, targetFloor);
                 stopping = false;
-                (person.GetComponent("PersonController") as PersonController).arriveAtFloor(targetFloor, gameObject);
+                foreach (PersonController person in people) {
+                    person.arriveAtFloor(targetFloor, gameObject);
+                }
             }
         }
 

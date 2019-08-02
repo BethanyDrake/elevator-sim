@@ -22,7 +22,7 @@ public class PersonController : MonoBehaviour
     public float direction = 0;
     public void arriveAtFloor(float floor, GameObject elevator) {
 
-        if (floor == currentFloor && targetElevator == null && !onElevator) {
+        if (targetFloor != currentFloor && floor == currentFloor && targetElevator == null && !onElevator) {
             targetElevator = elevator;
             Debug.Log("get on!");
             Debug.Log(elevator.transform.position);
@@ -49,9 +49,11 @@ public class PersonController : MonoBehaviour
     }
     void GetOff() {
         onElevator = false;
+        currentFloor = targetElevator.transform.position.y;
         targetElevator = null;
         targetPosition = -6;
         direction = -1;
+
     }
     void Update()
     {
