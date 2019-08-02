@@ -47,11 +47,21 @@ public class PersonController : MonoBehaviour
         else onElevator = true;
 
     }
+    void GetOff() {
+        onElevator = false;
+        targetElevator = null;
+        targetPosition = -6;
+        direction = -1;
+    }
     void Update()
     {
 
         if (onElevator) {
             this.transform.position = new Vector2(transform.position.x, targetElevator.transform.position.y);
+            ElevatorMove elevatorMoveScript =(targetElevator.GetComponent("ElevatorMove") as ElevatorMove);
+            if (elevatorMoveScript.velocity == 0 && targetElevator.transform.position.y == targetFloor) {
+                GetOff();
+            }
         }
 
         if (direction != 0 && !onElevator) {
