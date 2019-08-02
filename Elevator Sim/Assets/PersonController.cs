@@ -14,12 +14,16 @@ public class PersonController : MonoBehaviour
     public float fastSpeed = 5;
     public float slowSpeed = 2;
     public float speed = 5;
+    public float initalPosition = -2.5F;
+    public float targetPosition = -2.5F;
     void Start()
     {
+        targetPosition = initalPosition;
+        MoveToTarget(targetPosition, fastSpeed);
 
     }
 
-    public float targetPosition;
+
 
     public float direction = 0;
     public void arriveAtFloor(float floor, GameObject elevator) {
@@ -80,12 +84,17 @@ public class PersonController : MonoBehaviour
             if (direction > 0 && targetPosition - transform.position.x < 0) {
                 direction = 0;
                 transform.position = new Vector2(targetPosition, transform.position.y);
-                GetOn();
+                if (targetElevator) {
+                    GetOn();
+                }
+
             }
             else if (direction < 0 && targetPosition - transform.position.x > 0) {
                 direction = 0;
                 transform.position = new Vector2(targetPosition, transform.position.y);
-                GetOn();
+                if (targetElevator) {
+                    GetOn();
+                }
             } else
 
             transform.position = new Vector2(transform.position.x + direction * Time.deltaTime * speed, transform.position.y);

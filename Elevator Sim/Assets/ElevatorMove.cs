@@ -13,6 +13,8 @@ public class ElevatorMove : MonoBehaviour
 
     }
 
+    public KeyCode upKey;
+    public KeyCode downKey;
 
     public bool movingUp = false;
     public bool movingDown = false;
@@ -34,19 +36,19 @@ public class ElevatorMove : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Q)) {
+        if (Input.GetKeyDown(upKey)) {
             movingUp = true;
             stopping = false;
         }
-        if (Input.GetKeyUp(KeyCode.Q)) {
+        if (Input.GetKeyUp(upKey)) {
             movingUp = false;
         }
 
-         if (Input.GetKeyDown(KeyCode.A)) {
+         if (Input.GetKeyDown(downKey)) {
             movingDown = true;
             stopping = false;
         }
-        if (Input.GetKeyUp(KeyCode.A)) {
+        if (Input.GetKeyUp(downKey)) {
             movingDown = false;
         }
 
