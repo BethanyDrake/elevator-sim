@@ -23,6 +23,9 @@ public class PersonController : MonoBehaviour
     {
         targetPosition = initalPosition;
         SetNewTarget();
+        if (targetFloor != currentFloor) {
+            targetPosition = LevelSettings.waitPoint;
+        }
         MoveToTarget(targetPosition, fastSpeed);
         timeSinceArrived = 0;
     }
@@ -63,7 +66,7 @@ public class PersonController : MonoBehaviour
     void GetOn() {
         if (targetElevator.transform.position.y != currentFloor) {
             targetElevator = null;
-            targetPosition = -4;
+            targetPosition = LevelSettings.waitPoint;
             MoveToTarget(targetPosition, slowSpeed);
 
         }
@@ -101,7 +104,7 @@ public class PersonController : MonoBehaviour
             if (timeSinceArrived > waitTime) {
                 SetNewTarget();
                 if (targetFloor != currentFloor) {
-                    targetPosition = -4;
+                    targetPosition = LevelSettings.waitPoint;
                     MoveToTarget(targetPosition, fastSpeed);
                 }
                 timeSinceArrived = 0;

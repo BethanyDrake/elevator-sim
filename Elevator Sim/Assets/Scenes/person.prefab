@@ -101,7 +101,9 @@ MonoBehaviour:
   speed: 5
   initalPosition: -2.5
   targetPosition: 0
+  waitTime: 5
+  timeSinceArrived: 0
   direction: 0
-  targetIndicatorPrefab: {fileID: 5223658589731849940, guid: 8ba8a3c3c560641aea4118c6f11d459f,
+  targetIndicatorPrefab: {fileID: 8337708987373927456, guid: 24ac2b9187e64496089ac9c2b7c732d5,
     type: 3}
   targetIndicator: {fileID: 0}
