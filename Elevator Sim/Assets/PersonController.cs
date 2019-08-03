@@ -101,6 +101,7 @@ public class PersonController : MonoBehaviour
         targetIndicator = null;
         onElevator = false;
         currentFloor = targetElevator.transform.position.y;
+        transform.position = new Vector2(transform.position.x, currentFloor);
         (targetElevator.GetComponent("ElevatorMove") as ElevatorMove).GetOff(gameObject);
         targetElevator = null;
         targetPosition = -6;
@@ -136,7 +137,7 @@ public class PersonController : MonoBehaviour
         // }
 
         if (onElevator) {
-            this.transform.position = new Vector2(transform.position.x, targetElevator.transform.position.y);
+            //this.transform.position = new Vector2(transform.position.x, targetElevator.transform.position.y);
             ElevatorMove elevatorMoveScript =(targetElevator.GetComponent("ElevatorMove") as ElevatorMove);
             if (elevatorMoveScript.velocity == 0 && targetElevator.transform.position.y == targetFloor) {
                 GetOff();

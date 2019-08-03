@@ -50,6 +50,24 @@ public class ElevatorMove : MonoBehaviour
     }
 
 
+    Vector3 GetPositionOffset(int index)
+    {
+        float offset = .2F;
+        switch (index)
+        {
+            case 0:
+                return new Vector3(-offset, -offset, 0);
+            case 1:
+                return new Vector3(offset, -offset, 0);
+            case 2:
+                return new Vector3(-offset, offset, 0);
+            case 3:
+                return new Vector3(offset, offset, 0);
+            case 4:
+                return new Vector3(0, 0, 0);
+        }
+        return new Vector3(0, 0, 0);
+    }
 
     // Update is called once per frame
     void Update()
@@ -133,6 +151,15 @@ public class ElevatorMove : MonoBehaviour
         if (velocity != 0) {
             transform.position = new Vector2(transform.position.x, transform.position.y + velocity * Time.deltaTime);
         }
+
+
+        int i = 0;
+        foreach (GameObject person in peopleOnBoard)
+        {
+            person.transform.position = (transform.position + GetPositionOffset(i));
+            i++;
+        }
+
 
     }
 }
