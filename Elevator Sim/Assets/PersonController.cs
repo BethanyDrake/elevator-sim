@@ -19,8 +19,11 @@ public class PersonController : MonoBehaviour
     public float waitTime = 5;
 
 
+    SpriteRenderer spriteRenderer;
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColour = spriteRenderer.color;
         targetPosition = initalPosition;
         SetNewTarget();
         if (targetFloor != currentFloor) {
@@ -115,9 +118,24 @@ public class PersonController : MonoBehaviour
     }
 
     public float timeSinceLastProduction = 0;
+    public bool flashing = false;
+    float flashTime = 0.2F;
+    public Color originalColour;
+    public Color flashColour = Color.white;
     public float timeToProduce = 1.5F;
+    public float timeSinceFlashed = 0;
     void Update()
     {
+
+        if (flashing)
+        {
+            timeSinceFlashed += Time.deltaTime;
+            if (timeSinceFlashed >= flashTime)
+            {
+                flashing = false;
+                spriteRenderer.color = originalColour;
+            }
+        }
 
         if (targetFloor == currentFloor) {
 
@@ -126,6 +144,11 @@ public class PersonController : MonoBehaviour
             {
                 timeSinceLastProduction = 0;
                 ProductivityTextController.instance.UpdateProductivity(1);
+
+                flashing = true;
+                timeSinceFlashed = 0;
+                spriteRenderer.color = flashColour;
+
             }
             timeSinceArrived += Time.deltaTime;
             if (timeSinceArrived > waitTime) {
