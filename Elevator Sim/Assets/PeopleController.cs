@@ -12,7 +12,16 @@ public class PeopleController : MonoBehaviour
     public int numPeople = 0;
     public List<GameObject> people = new List<GameObject>();
     public ElevatorMove[] elevators = new ElevatorMove[10];
+
     public Vector3 spawnPoint;
+
+    public void SendEveryoneHome()
+    {
+        foreach(GameObject person in people)
+        {
+            Destroy(person);
+        }
+    }
     void Start()
     {
 

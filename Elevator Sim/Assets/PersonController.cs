@@ -113,10 +113,20 @@ public class PersonController : MonoBehaviour
         direction = -1;
 
     }
+
+    public float timeSinceLastProduction = 0;
+    public float timeToProduce = 1.5F;
     void Update()
     {
 
         if (targetFloor == currentFloor) {
+
+            timeSinceLastProduction += Time.deltaTime;
+            if (timeSinceLastProduction >= timeToProduce)
+            {
+                timeSinceLastProduction = 0;
+                ProductivityTextController.instance.UpdateProductivity(1);
+            }
             timeSinceArrived += Time.deltaTime;
             if (timeSinceArrived > waitTime) {
                 SetNewTarget();
