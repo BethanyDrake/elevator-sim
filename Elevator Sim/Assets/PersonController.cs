@@ -24,7 +24,8 @@ public class PersonController : MonoBehaviour
         targetPosition = initalPosition;
         SetNewTarget();
         if (targetFloor != currentFloor) {
-            targetPosition = LevelSettings.waitPoint;
+            LevelSettings.StartWaiting(gameObject, currentFloor);
+            targetPosition = LevelSettings.GetWaitPoint(gameObject, currentFloor);
         }
         MoveToTarget(targetPosition, fastSpeed);
         timeSinceArrived = 0;
@@ -47,6 +48,7 @@ public class PersonController : MonoBehaviour
             Debug.Log(elevator.transform.position);
             targetPosition = elevator.transform.position.x;
             MoveToTarget(targetPosition, fastSpeed);
+            LevelSettings.StopWaiting(gameObject, currentFloor);
 
 
         }
@@ -66,8 +68,11 @@ public class PersonController : MonoBehaviour
     void GetOn() {
         if (targetElevator.transform.position.y != currentFloor) {
             targetElevator = null;
-            targetPosition = LevelSettings.waitPoint;
+            LevelSettings.StartWaiting(gameObject, currentFloor);
+            targetPosition = LevelSettings.GetWaitPoint(gameObject, currentFloor);
             MoveToTarget(targetPosition, slowSpeed);
+
+
 
         }
         else  {
@@ -111,15 +116,13 @@ public class PersonController : MonoBehaviour
     void Update()
     {
 
-
-
-
         if (targetFloor == currentFloor) {
             timeSinceArrived += Time.deltaTime;
             if (timeSinceArrived > waitTime) {
                 SetNewTarget();
                 if (targetFloor != currentFloor) {
-                    targetPosition = LevelSettings.waitPoint;
+                    LevelSettings.StartWaiting(gameObject, currentFloor);
+                    targetPosition = LevelSettings.GetWaitPoint(gameObject, currentFloor);
                     MoveToTarget(targetPosition, fastSpeed);
                 }
                 timeSinceArrived = 0;
