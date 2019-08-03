@@ -70,8 +70,21 @@ public class PersonController : MonoBehaviour
             MoveToTarget(targetPosition, slowSpeed);
 
         }
-        else onElevator = true;
-        LightUpTarget(new Vector2(targetElevator.transform.position.x, targetFloor));
+        else  {
+            var success = (targetElevator.GetComponent("ElevatorMove") as ElevatorMove).GetOn(gameObject);
+            if (success) {
+                onElevator = true;
+                LightUpTarget(new Vector2(targetElevator.transform.position.x, targetFloor));
+            }
+            else {
+                targetElevator = null;
+                targetPosition = LevelSettings.waitPoint;
+                MoveToTarget(targetPosition, slowSpeed);
+
+            }
+
+
+        }
 
     }
 
@@ -88,6 +101,7 @@ public class PersonController : MonoBehaviour
         targetIndicator = null;
         onElevator = false;
         currentFloor = targetElevator.transform.position.y;
+        (targetElevator.GetComponent("ElevatorMove") as ElevatorMove).GetOff(gameObject);
         targetElevator = null;
         targetPosition = -6;
         direction = -1;

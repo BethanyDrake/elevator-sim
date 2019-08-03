@@ -27,11 +27,30 @@ public class ElevatorMove : MonoBehaviour
     public float targetFloor;
     public bool tooFast = false;
     public bool calculatedTargetFloor;
+    public int maxCapacity = 4;
     public List<PersonController> people = new List<PersonController>();
 
+
+    public List<GameObject> peopleOnBoard = new List<GameObject>();
     public void AddPerson(GameObject person) {
        people.Add(person.GetComponent("PersonController") as PersonController);
     }
+
+    public bool GetOn(GameObject person){
+        if (peopleOnBoard.Count < maxCapacity) {
+            peopleOnBoard.Add(person);
+            return true;
+        }
+        return false;
+
+    }
+
+    public void GetOff(GameObject person) {
+        peopleOnBoard.Remove(person);
+    }
+
+
+
     // Update is called once per frame
     void Update()
     {
@@ -95,9 +114,19 @@ public class ElevatorMove : MonoBehaviour
                 velocity = 0;
                 transform.position = new Vector2(transform.position.x, targetFloor);
                 stopping = false;
-                foreach (PersonController person in people) {
+                foreach (GameObject person in peopleOnBoard) {
+                    PersonController personController = person.GetComponent("PersonController") as PersonController;
+                    personController.arriveAtFloor(targetFloor, gameObject);
+                }
+
+
+
+                foreach (PersonController person in people)
+                {
                     person.arriveAtFloor(targetFloor, gameObject);
                 }
+
+
             }
         }
 
