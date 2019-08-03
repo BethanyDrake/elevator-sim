@@ -16,15 +16,25 @@ public class PersonController : MonoBehaviour
     public float speed = 5;
     public float initalPosition = -2.5F;
     public float targetPosition = -2.5F;
+    public float waitTime = 5;
+
+
     void Start()
     {
         targetPosition = initalPosition;
+        SetNewTarget();
         MoveToTarget(targetPosition, fastSpeed);
+        timeSinceArrived = 0;
+    }
 
+
+    void SetNewTarget() {
+        targetFloor = Mathf.Floor(Random.value * 9) - 4;
     }
 
 
 
+    public float timeSinceArrived = 0;
     public float direction = 0;
     public void arriveAtFloor(float floor, GameObject elevator) {
 
@@ -58,9 +68,21 @@ public class PersonController : MonoBehaviour
 
         }
         else onElevator = true;
+        LightUpTarget(new Vector2(targetElevator.transform.position.x, targetFloor));
 
     }
-    void GetOff() {
+
+    public GameObject targetIndicatorPrefab;
+
+    public GameObject targetIndicator;
+    void LightUpTarget(Vector2 position)
+    {
+        targetIndicator = Instantiate(targetIndicatorPrefab, position,  Quaternion.identity);
+    }
+    void GetOff()
+    {
+        Destroy(targetIndicator);
+        targetIndicator = null;
         onElevator = false;
         currentFloor = targetElevator.transform.position.y;
         targetElevator = null;
@@ -70,6 +92,31 @@ public class PersonController : MonoBehaviour
     }
     void Update()
     {
+
+
+
+
+        if (targetFloor == currentFloor) {
+            timeSinceArrived += Time.deltaTime;
+            if (timeSinceArrived > waitTime) {
+                SetNewTarget();
+                if (targetFloor != currentFloor) {
+                    targetPosition = -4;
+                    MoveToTarget(targetPosition, fastSpeed);
+                }
+                timeSinceArrived = 0;
+            }
+        }
+
+        // if (direction == 0 && !onElevator && targetFloor == currentFloor) {
+        //     targetPosition = -6;
+        //     MoveToTarget(targetPosition, fastSpeed);
+        // }
+
+        // if (direction == 0 && !onElevator && targetFloor != currentFloor) {
+        //     targetPosition = -4;
+        //     MoveToTarget(targetPosition, fastSpeed);
+        // }
 
         if (onElevator) {
             this.transform.position = new Vector2(transform.position.x, targetElevator.transform.position.y);

@@ -167,6 +167,7 @@ MonoBehaviour:
     type: 3}
   time: 0
   hireRate: 5
+  maxPeople: 10
   numPeople: 0
   people: []
   elevators:

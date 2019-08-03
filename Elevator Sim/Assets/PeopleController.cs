@@ -8,6 +8,7 @@ public class PeopleController : MonoBehaviour
     public GameObject personPrefab;
     public float time = 0;
     public float hireRate = 5;
+    public int maxPeople = 10;
     public int numPeople = 0;
     public List<GameObject> people = new List<GameObject>();
     public ElevatorMove[] elevators = new ElevatorMove[10];
@@ -21,7 +22,7 @@ public class PeopleController : MonoBehaviour
     void Update()
     {
         time += Time.deltaTime;
-        if (numPeople < time / hireRate) {
+        if (numPeople < maxPeople && numPeople < time / hireRate) {
             var newPerson = Instantiate(personPrefab, spawnPoint, Quaternion.identity);
             people.Add(newPerson);
             numPeople++;
