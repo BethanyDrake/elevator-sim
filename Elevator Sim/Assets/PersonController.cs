@@ -13,18 +13,26 @@ public class PersonController : MonoBehaviour
     public bool onElevator = false;
     public float fastSpeed = 5;
     public float slowSpeed = 2;
+    public float superSlowSpeed = 1;
     public float speed = 5;
     public float initalPosition = -2.5F;
     public float targetPosition = -2.5F;
     public float waitTime = 5;
 
 
+
+
+
+    float GetProductiveLocation()
+    {
+        return Random.Range(-5.8F, -3.2F);
+    }
     SpriteRenderer spriteRenderer;
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColour = spriteRenderer.color;
-        targetPosition = initalPosition;
+        targetPosition = GetProductiveLocation();
         SetNewTarget();
         if (targetFloor != currentFloor) {
             LevelSettings.StartWaiting(gameObject, currentFloor);
@@ -112,8 +120,8 @@ public class PersonController : MonoBehaviour
         transform.position = new Vector2(transform.position.x, currentFloor);
         (targetElevator.GetComponent("ElevatorMove") as ElevatorMove).GetOff(gameObject);
         targetElevator = null;
-        targetPosition = -6;
-        direction = -1;
+        targetPosition = GetProductiveLocation();
+        MoveToTarget(targetPosition, fastSpeed);
 
     }
 
@@ -124,56 +132,82 @@ public class PersonController : MonoBehaviour
     public Color flashColour = Color.white;
     public float timeToProduce = 1.5F;
     public float timeSinceFlashed = 0;
+
+    void ContinueFlashing()
+    {
+        timeSinceFlashed += Time.deltaTime;
+        if (timeSinceFlashed >= flashTime)
+        {
+            flashing = false;
+            spriteRenderer.color = originalColour;
+        }
+    }
+
+    void DoProductiveStuff()
+    {
+        timeSinceLastProduction += Time.deltaTime;
+        if (timeSinceLastProduction >= timeToProduce)
+        {
+            timeSinceLastProduction = 0;
+            ProductivityTextController.instance.UpdateProductivity(1);
+
+            flashing = true;
+            timeSinceFlashed = 0;
+            spriteRenderer.color = flashColour;
+
+        }
+        timeSinceArrived += Time.deltaTime;
+        if (timeSinceArrived > waitTime) {
+            SetNewTarget();
+            if (targetFloor != currentFloor) {
+                LevelSettings.StartWaiting(gameObject, currentFloor);
+                targetPosition = LevelSettings.GetWaitPoint(gameObject, currentFloor);
+                MoveToTarget(targetPosition, fastSpeed);
+            }
+            timeSinceArrived = 0;
+        }
+    }
+
+    void DoMovementStuff()
+    {
+        if (direction > 0 && targetPosition - transform.position.x < 0) {
+            direction = 0;
+            transform.position = new Vector2(targetPosition, transform.position.y);
+            if (targetElevator) {
+                GetOn();
+            }
+
+        }
+        else if (direction < 0 && targetPosition - transform.position.x > 0) {
+            direction = 0;
+            transform.position = new Vector2(targetPosition, transform.position.y);
+            if (targetElevator) {
+                GetOn();
+            }
+        } else
+
+        transform.position = new Vector2(transform.position.x + direction * Time.deltaTime * speed, transform.position.y);
+    }
     void Update()
     {
 
         if (flashing)
         {
-            timeSinceFlashed += Time.deltaTime;
-            if (timeSinceFlashed >= flashTime)
-            {
-                flashing = false;
-                spriteRenderer.color = originalColour;
-            }
+            ContinueFlashing();
         }
 
         if (targetFloor == currentFloor) {
-
-            timeSinceLastProduction += Time.deltaTime;
-            if (timeSinceLastProduction >= timeToProduce)
+            DoProductiveStuff();
+            if (direction == 0)
             {
-                timeSinceLastProduction = 0;
-                ProductivityTextController.instance.UpdateProductivity(1);
-
-                flashing = true;
-                timeSinceFlashed = 0;
-                spriteRenderer.color = flashColour;
-
+                targetPosition = GetProductiveLocation();
+                MoveToTarget(targetPosition, superSlowSpeed);
             }
-            timeSinceArrived += Time.deltaTime;
-            if (timeSinceArrived > waitTime) {
-                SetNewTarget();
-                if (targetFloor != currentFloor) {
-                    LevelSettings.StartWaiting(gameObject, currentFloor);
-                    targetPosition = LevelSettings.GetWaitPoint(gameObject, currentFloor);
-                    MoveToTarget(targetPosition, fastSpeed);
-                }
-                timeSinceArrived = 0;
-            }
+
         }
 
-        // if (direction == 0 && !onElevator && targetFloor == currentFloor) {
-        //     targetPosition = -6;
-        //     MoveToTarget(targetPosition, fastSpeed);
-        // }
-
-        // if (direction == 0 && !onElevator && targetFloor != currentFloor) {
-        //     targetPosition = -4;
-        //     MoveToTarget(targetPosition, fastSpeed);
-        // }
-
         if (onElevator) {
-            //this.transform.position = new Vector2(transform.position.x, targetElevator.transform.position.y);
+
             ElevatorMove elevatorMoveScript =(targetElevator.GetComponent("ElevatorMove") as ElevatorMove);
             if (elevatorMoveScript.velocity == 0 && targetElevator.transform.position.y == targetFloor) {
                 GetOff();
@@ -181,24 +215,7 @@ public class PersonController : MonoBehaviour
         }
 
         if (direction != 0 && !onElevator) {
-
-            if (direction > 0 && targetPosition - transform.position.x < 0) {
-                direction = 0;
-                transform.position = new Vector2(targetPosition, transform.position.y);
-                if (targetElevator) {
-                    GetOn();
-                }
-
-            }
-            else if (direction < 0 && targetPosition - transform.position.x > 0) {
-                direction = 0;
-                transform.position = new Vector2(targetPosition, transform.position.y);
-                if (targetElevator) {
-                    GetOn();
-                }
-            } else
-
-            transform.position = new Vector2(transform.position.x + direction * Time.deltaTime * speed, transform.position.y);
+            DoMovementStuff();
         }
 
 
