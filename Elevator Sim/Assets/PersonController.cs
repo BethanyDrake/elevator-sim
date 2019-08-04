@@ -30,6 +30,7 @@ public class PersonController : MonoBehaviour
     SpriteRenderer spriteRenderer;
     void Start()
     {
+        currentFloor = LevelSettings.instance.rockBottom;
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColour = spriteRenderer.color;
         targetPosition = GetProductiveLocation();

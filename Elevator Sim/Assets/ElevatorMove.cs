@@ -113,14 +113,17 @@ public class ElevatorMove : MonoBehaviour
             }
         }
         if (stopping && !tooFast && !calculatedTargetFloor) {
+            var rockBottom = LevelSettings.instance.rockBottom;
             if (velocity > 0)  {
                 actualDirectionIsUp = true;
-                targetFloor = Mathf.Ceil(transform.position.y/floorHeight) *floorHeight;
+
+
+                targetFloor = Mathf.Ceil((transform.position.y - rockBottom)/floorHeight) *floorHeight  + rockBottom;
                 Debug.Log("calculated target floor!" + targetFloor);
             }
             else {
                 actualDirectionIsUp = false;
-                targetFloor = Mathf.Floor(transform.position.y/floorHeight)*floorHeight;
+                targetFloor = Mathf.Floor((transform.position.y - rockBottom) /floorHeight)*floorHeight + rockBottom;
                 Debug.Log("calculated target floor!" + targetFloor);
 
             }
@@ -132,6 +135,7 @@ public class ElevatorMove : MonoBehaviour
             if ( (actualDirectionIsUp && transform.position.y > targetFloor) ||
              (!actualDirectionIsUp && transform.position.y < targetFloor)
             ) {
+                Debug.Log(Time.time + "arrived At floor " + targetFloor);
                 velocity = 0;
                 transform.position = new Vector2(transform.position.x, targetFloor);
                 stopping = false;

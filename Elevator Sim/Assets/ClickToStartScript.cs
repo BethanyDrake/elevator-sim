@@ -17,11 +17,11 @@ public class ClickToStartScript : MonoBehaviour
     }
     public void StartLevel2()
     {
-
+        SceneManager.LoadScene("Level2");
     }
     public void StartLevel3()
     {
-
+        SceneManager.LoadScene("Level3");
     }
 
     // Update is called once per frame
