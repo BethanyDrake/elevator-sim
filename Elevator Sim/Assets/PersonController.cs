@@ -86,16 +86,15 @@ public class PersonController : MonoBehaviour
 
         }
         else  {
-            Debug.Log("getting on (person)");
             var success = (targetElevator.GetComponent("ElevatorMove") as ElevatorMove).GetOn(gameObject);
-             Debug.Log("success ?" + success);
             if (success) {
                 onElevator = true;
                 LightUpTarget(new Vector2(targetElevator.transform.position.x, targetFloor));
             }
             else {
                 targetElevator = null;
-                targetPosition = LevelSettings.instance.waitPoint;
+                LevelSettings.StartWaiting(gameObject, currentFloor);
+                targetPosition = LevelSettings.GetWaitPoint(gameObject, currentFloor);
                 MoveToTarget(targetPosition, slowSpeed);
 
             }

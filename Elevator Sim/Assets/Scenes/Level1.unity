@@ -312,14 +312,14 @@ MonoBehaviour:
   personPrefab: {fileID: 8364278523855682846, guid: b6687388dd0584a78bd64d543d3e6ea2,
     type: 3}
   time: 0
-  hireRate: 5
-  maxPeople: 10
+  hireRate: 1
+  maxPeople: 40
   numPeople: 0
   people: []
   elevators:
   - {fileID: 533873815}
   - {fileID: 1770935548}
-  - {fileID: 0}
+  - {fileID: 946245963}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
