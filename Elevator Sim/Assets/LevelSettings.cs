@@ -7,6 +7,7 @@ public class LevelSettings : MonoBehaviour
 
     public int numFloors = 9;
 
+    public int level;
     public float floorHeight;
     public float rockBottom;
     public static LevelSettings instance;

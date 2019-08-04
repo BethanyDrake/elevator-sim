@@ -7,6 +7,8 @@ public class ProductivityTextController : MonoBehaviour
 {
 
     public static ProductivityTextController instance;
+
+    public string metric;
     public int productivity = 0;
     // Start is called before the first frame update
 
@@ -15,13 +17,13 @@ public class ProductivityTextController : MonoBehaviour
     {
         instance = this;
         text = GetComponent<Text>();
-        text.text = "Productivity: "+ productivity;
+        text.text = metric + ": "+ productivity;
     }
 
     public void UpdateProductivity(int amount)
     {
         productivity+= amount;
-        text.text = "Productivity: "+ productivity;
+        text.text = metric + ": "+ productivity;
 
     }
 

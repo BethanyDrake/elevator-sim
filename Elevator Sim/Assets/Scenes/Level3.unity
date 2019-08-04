@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee94ad910a954461eb2ed6816da1c324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  metric: Productivity
   productivity: 0
 --- !u!114 &228845961
 MonoBehaviour:
@@ -376,6 +377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numFloors: 10
+  level: 2
   floorHeight: 1
   rockBottom: -4.5
   squareSize: 1
