@@ -10,7 +10,7 @@ public class ElevatorMove : MonoBehaviour
 
     void Start()
     {
-
+        floorHeight = LevelSettings.instance.floorHeight;
     }
 
     public KeyCode upKey;
@@ -28,6 +28,7 @@ public class ElevatorMove : MonoBehaviour
     public bool tooFast = false;
     public bool calculatedTargetFloor;
     public int maxCapacity = 4;
+    public float floorHeight;
     public List<PersonController> people = new List<PersonController>();
 
 
@@ -114,11 +115,13 @@ public class ElevatorMove : MonoBehaviour
         if (stopping && !tooFast && !calculatedTargetFloor) {
             if (velocity > 0)  {
                 actualDirectionIsUp = true;
-                targetFloor = Mathf.Ceil(transform.position.y);}
-
+                targetFloor = Mathf.Ceil(transform.position.y/floorHeight) *floorHeight;
+                Debug.Log("calculated target floor!" + targetFloor);
+            }
             else {
                 actualDirectionIsUp = false;
-                targetFloor = Mathf.Floor(transform.position.y);
+                targetFloor = Mathf.Floor(transform.position.y/floorHeight)*floorHeight;
+                Debug.Log("calculated target floor!" + targetFloor);
 
             }
             calculatedTargetFloor = true;

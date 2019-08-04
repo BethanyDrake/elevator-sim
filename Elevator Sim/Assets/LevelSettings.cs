@@ -5,38 +5,86 @@ using UnityEngine;
 public class LevelSettings : MonoBehaviour
 {
 
+    public int numFloors = 9;
+
+    public float floorHeight;
+    public float rockBottom;
+    public static LevelSettings instance;
+
+    int FloorPositionToNumber(float floorPosition)
+    {
+
+        Debug.Log(Time.time +"calculatingFloorPosition "+ floorPosition);
+        var res = (floorPosition - rockBottom) / floorHeight;
+        Debug.Log(Time.time +"res "+ res);
+        return (int) res;
+    }
     class WaitArea
     {
         public List<GameObject> peopleWaiting = new List<GameObject>();
     }
-    static WaitArea[] floors = new WaitArea[9];
-    static public void StartWaiting(GameObject person, float floor)
+    WaitArea[] floors;
+    static public void StartWaiting(GameObject person, float floorPosition)
     {
-        WaitArea waitArea = floors[(int) floor + 4];
+        instance._StartWaiting(person, floorPosition);
+    }
+
+    public void _StartWaiting(GameObject person, float floorPosition)
+    {
+
+        var floor = FloorPositionToNumber(floorPosition);
+        WaitArea waitArea = floors[floor];
         waitArea.peopleWaiting.Add(person);
     }
+
+
     static public void StopWaiting(GameObject person, float floor)
     {
-        WaitArea waitArea = floors[(int) floor + 4];
+        instance._StopWaiting(person, floor);
+    }
+    public void _StopWaiting(GameObject person, float floor)
+    {
+        WaitArea waitArea = floors[FloorPositionToNumber(floor)];
         waitArea.peopleWaiting.Remove(person);
-
     }
 
     static public float GetWaitPoint(GameObject person, float floor)
     {
-        var offset = 0.25F;
-        WaitArea waitArea = floors[(int) floor + 4];
-        var index = waitArea.peopleWaiting.IndexOf(person);
-        return -3.5F - offset * index;
+
+        Debug.Log("instance?" + instance);
+        Debug.Log("waitpount?" + instance.waitPoint);
+
+        return instance._GetWaitPoint(person, floor);
     }
-    static public float waitPoint = -3.5F;
+
+    public float _GetWaitPoint(GameObject person, float floor)
+    {
+        var offset = 0.25F;
+        WaitArea waitArea = floors[FloorPositionToNumber(floor)];
+        var index = waitArea.peopleWaiting.IndexOf(person);
+
+        var res = waitPoint - offset * index;
+        Debug.Log("waitPoint gotten:" + res);
+        return res;
+    }
+    public float waitPoint = -3.5F;
     // Start is called before the first frame update
+
+    void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
-        for (int i = 0; i < 10; i++)
+
+        floors = new WaitArea[instance.numFloors];
+        for (int i = 0; i < numFloors; i++)
         {
             floors[i] = new WaitArea();
         }
+
+
+
 
     }
 

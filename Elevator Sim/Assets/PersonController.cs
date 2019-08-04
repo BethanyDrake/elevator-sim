@@ -44,7 +44,7 @@ public class PersonController : MonoBehaviour
 
 
     void SetNewTarget() {
-        targetFloor = Mathf.Floor(Random.value * 9) - 4;
+        targetFloor = FloorPosition(Mathf.Floor(Random.value * LevelSettings.instance.numFloors) + LevelSettings.instance.rockBottom);
     }
 
 
@@ -83,18 +83,18 @@ public class PersonController : MonoBehaviour
             targetPosition = LevelSettings.GetWaitPoint(gameObject, currentFloor);
             MoveToTarget(targetPosition, slowSpeed);
 
-
-
         }
         else  {
+            Debug.Log("getting on (person)");
             var success = (targetElevator.GetComponent("ElevatorMove") as ElevatorMove).GetOn(gameObject);
+             Debug.Log("success ?" + success);
             if (success) {
                 onElevator = true;
                 LightUpTarget(new Vector2(targetElevator.transform.position.x, targetFloor));
             }
             else {
                 targetElevator = null;
-                targetPosition = LevelSettings.waitPoint;
+                targetPosition = LevelSettings.instance.waitPoint;
                 MoveToTarget(targetPosition, slowSpeed);
 
             }
@@ -220,6 +220,10 @@ public class PersonController : MonoBehaviour
 
 
 
+    }
 
+    public float FloorPosition(float floorNumber)
+    {
+        return (floorNumber - LevelSettings.instance.rockBottom) * LevelSettings.instance.floorHeight + LevelSettings.instance.rockBottom;
     }
 }

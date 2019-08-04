@@ -868,6 +868,7 @@ MonoBehaviour:
   tooFast: 0
   calculatedTargetFloor: 0
   maxCapacity: 4
+  floorHeight: 0
   people: []
   peopleOnBoard: []
 --- !u!212 &1065234200
@@ -1024,6 +1025,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f207183d13614562b60f34c8563b230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numFloors: 9
+  floorHeight: 1
+  rockBottom: -4
+  waitPoint: -3.5
 --- !u!1 &1141261862
 GameObject:
   m_ObjectHideFlags: 0
@@ -1209,6 +1214,7 @@ MonoBehaviour:
   tooFast: 0
   calculatedTargetFloor: 0
   maxCapacity: 4
+  floorHeight: 0
   people: []
   peopleOnBoard: []
 --- !u!1 &1539855370
