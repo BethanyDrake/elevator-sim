@@ -5,7 +5,7 @@ using UnityEngine;
 public class ArrowScript : MonoBehaviour
 {
 
-    public float revolutionsPerMinute = 1;
+    public float secondsPerRotation;
     public float moveSpeed = 0.8F;
     public Vector3 startingPosition;
     public GameObject clockFace;
@@ -36,7 +36,7 @@ public class ArrowScript : MonoBehaviour
     {
         if (moving)
         {
-            var rotationPerSecond = -360 * revolutionsPerMinute / 60;
+            var rotationPerSecond = -360 / secondsPerRotation;
             var angle = rotationPerSecond * Time.deltaTime;
             transform.RotateAround(clockFace.transform.position, new Vector3(0, 0, 1), angle);
         }

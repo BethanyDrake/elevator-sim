@@ -1684,7 +1684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656b5863b6400472fa52626e2f04e4be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  revolutionsPerMinute: 1
+  secondsPerRotation: 60
   moveSpeed: 0.1
   startingPosition: {x: 0, y: 0, z: 0}
   clockFace: {fileID: 1660838725}
