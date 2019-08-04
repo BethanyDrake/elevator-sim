@@ -25,7 +25,7 @@ public class PersonController : MonoBehaviour
 
     float GetProductiveLocation()
     {
-        return Random.Range(-5.8F, -3.2F);
+        return Random.Range(LevelSettings.instance.leftWall, LevelSettings.instance.rightWall);
     }
     SpriteRenderer spriteRenderer;
     void Start()
@@ -110,6 +110,8 @@ public class PersonController : MonoBehaviour
     void LightUpTarget(Vector2 position)
     {
         targetIndicator = Instantiate(targetIndicatorPrefab, position,  Quaternion.identity);
+        var indicatorSize = LevelSettings.instance.squareSize * 1.2F;
+        targetIndicator.transform.localScale = new Vector3(indicatorSize, indicatorSize, indicatorSize);
     }
     void GetOff()
     {

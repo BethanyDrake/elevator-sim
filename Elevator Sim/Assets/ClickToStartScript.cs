@@ -11,11 +11,24 @@ public class ClickToStartScript : MonoBehaviour
 
     }
 
+    public void StartLevel1()
+    {
+        SceneManager.LoadScene("Level1");
+    }
+    public void StartLevel2()
+    {
+
+    }
+    public void StartLevel3()
+    {
+
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) {
-            SceneManager.LoadScene("MainScene");
-        }
+        // if (Input.GetMouseButtonDown(0)) {
+        //     SceneManager.LoadScene("MainScene");
+        // }
     }
 }

@@ -10,6 +10,10 @@ public class LevelSettings : MonoBehaviour
     public float floorHeight;
     public float rockBottom;
     public static LevelSettings instance;
+    public float squareSize;
+
+    public float leftWall;
+    public float rightWall;
 
     int FloorPositionToNumber(float floorPosition)
     {
