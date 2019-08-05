@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class ElevatorMove : MonoBehaviour
-{
+public class ElevatorMove : MonoBehaviour {
     // Start is called before the first frame update
     //public GameObject person;
 
-    void Start()
-    {
+    void Start () {
         floorHeight = LevelSettings.instance.floorHeight;
     }
 
@@ -29,74 +26,70 @@ public class ElevatorMove : MonoBehaviour
     public bool calculatedTargetFloor;
     public int maxCapacity = 4;
     public float floorHeight;
-    public List<PersonController> people = new List<PersonController>();
+    public List<PersonController> people = new List<PersonController> ();
 
-
-    public List<GameObject> peopleOnBoard = new List<GameObject>();
-    public void AddPerson(GameObject person) {
-       people.Add(person.GetComponent("PersonController") as PersonController);
+    public List<GameObject> peopleOnBoard = new List<GameObject> ();
+    public void AddPerson (GameObject person) {
+        people.Add (person.GetComponent ("PersonController") as PersonController);
     }
 
-    public bool GetOn(GameObject person){
+    public bool GetOn (GameObject person) {
         if (peopleOnBoard.Count < maxCapacity) {
-            peopleOnBoard.Add(person);
+            peopleOnBoard.Add (person);
             return true;
         }
         return false;
 
     }
 
-    public void GetOff(GameObject person) {
-        peopleOnBoard.Remove(person);
+    public void GetOff (GameObject person) {
+        peopleOnBoard.Remove (person);
     }
 
-
-    Vector3 GetPositionOffset(int index)
-    {
+    Vector3 GetPositionOffset (int index) {
         float offset = .2F;
-        switch (index)
-        {
+        switch (index) {
             case 0:
-                return new Vector3(-offset, -offset, 0);
+                return new Vector3 (-offset, -offset, 0);
             case 1:
-                return new Vector3(offset, -offset, 0);
+                return new Vector3 (offset, -offset, 0);
             case 2:
-                return new Vector3(-offset, offset, 0);
+                return new Vector3 (-offset, offset, 0);
             case 3:
-                return new Vector3(offset, offset, 0);
+                return new Vector3 (offset, offset, 0);
             case 4:
-                return new Vector3(0, 0, 0);
+                return new Vector3 (0, 0, 0);
         }
-        return new Vector3(0, 0, 0);
+        return new Vector3 (0, 0, 0);
     }
 
     // Update is called once per frame
-    void Update()
-    {
 
-        if (Input.GetKeyDown(upKey)) {
-            movingUp = true;
-            stopping = false;
-        }
-        if (Input.GetKeyUp(upKey)) {
-            movingUp = false;
-        }
+    void ArriveAtFloor (float floor) {
 
-         if (Input.GetKeyDown(downKey)) {
-            movingDown = true;
-            stopping = false;
-        }
-        if (Input.GetKeyUp(downKey)) {
-            movingDown = false;
-        }
+        NotifyEveryoneOnBoard (floor);
 
-        if (movingUp && velocity < topSpeed) {
-            velocity += acceleration * Time.deltaTime;
-        }
-        if (movingDown && velocity > -topSpeed) {
-            velocity -= acceleration * Time.deltaTime;
-        }
+        NotifyEveryone(floor);
 
+    }
+
+    private void NotifyEveryone (float floor) {
+        foreach (PersonController person in people) {
+            person.arriveAtFloor (floor, gameObject);
+        }
+    }
+
+    private void NotifyEveryoneOnBoard (float floor) {
+        foreach (GameObject person in peopleOnBoard) {
+            PersonController personController = person.GetComponent ("PersonController") as PersonController;
+            personController.arriveAtFloor (floor, gameObject);
+        }
+    }
+
+    void Update () {
+        ProcessInput ();
+
+        UpdateVelocity ();
 
         //if the player has stopped moving, decalerrate to half max speed and continue until the next level
 
@@ -106,25 +99,42 @@ public class ElevatorMove : MonoBehaviour
             calculatedTargetFloor = false;
         }
         if (stopping && tooFast) {
-            if (velocity > topSpeed/2) velocity -= acceleration * Time.deltaTime;
-            else if (velocity < -topSpeed/2) velocity += acceleration * Time.deltaTime;
+            if (velocity > topSpeed / 2) velocity -= acceleration * Time.deltaTime;
+            else if (velocity < -topSpeed / 2) velocity += acceleration * Time.deltaTime;
             else {
                 tooFast = false;
             }
         }
+
+        if (transform.position.y > LevelSettings.instance.rockTop) {
+            velocity = 0;
+            transform.position = new Vector2 (transform.position.x, LevelSettings.instance.rockTop);
+            stopping = false;
+            tooFast = false;
+            movingUp = false;
+            ArriveAtFloor(transform.position.y);
+        }
+
+        if (transform.position.y < LevelSettings.instance.rockBottom) {
+            velocity = 0;
+            transform.position = new Vector2 (transform.position.x, LevelSettings.instance.rockBottom);
+            stopping = false;
+            tooFast = false;
+            movingDown = false;
+            ArriveAtFloor (transform.position.y);
+        }
+
         if (stopping && !tooFast && !calculatedTargetFloor) {
             var rockBottom = LevelSettings.instance.rockBottom;
-            if (velocity > 0)  {
+            if (velocity > 0) {
                 actualDirectionIsUp = true;
 
-
-                targetFloor = Mathf.Ceil((transform.position.y - rockBottom)/floorHeight) *floorHeight  + rockBottom;
-                Debug.Log("calculated target floor!" + targetFloor);
-            }
-            else {
+                targetFloor = Mathf.Ceil ((transform.position.y - rockBottom) / floorHeight) * floorHeight + rockBottom;
+                Debug.Log ("calculated target floor!" + targetFloor);
+            } else {
                 actualDirectionIsUp = false;
-                targetFloor = Mathf.Floor((transform.position.y - rockBottom) /floorHeight)*floorHeight + rockBottom;
-                Debug.Log("calculated target floor!" + targetFloor);
+                targetFloor = Mathf.Floor ((transform.position.y - rockBottom) / floorHeight) * floorHeight + rockBottom;
+                Debug.Log ("calculated target floor!" + targetFloor);
 
             }
             calculatedTargetFloor = true;
@@ -132,41 +142,61 @@ public class ElevatorMove : MonoBehaviour
 
         if (calculatedTargetFloor && stopping) {
 
-            if ( (actualDirectionIsUp && transform.position.y > targetFloor) ||
-             (!actualDirectionIsUp && transform.position.y < targetFloor)
+            if ((actualDirectionIsUp && transform.position.y > targetFloor) ||
+                (!actualDirectionIsUp && transform.position.y < targetFloor)
             ) {
-                Debug.Log(Time.time + "arrived At floor " + targetFloor);
+                Debug.Log (Time.time + "arrived At floor " + targetFloor);
                 velocity = 0;
-                transform.position = new Vector2(transform.position.x, targetFloor);
+                transform.position = new Vector2 (transform.position.x, targetFloor);
                 stopping = false;
                 foreach (GameObject person in peopleOnBoard) {
-                    PersonController personController = person.GetComponent("PersonController") as PersonController;
-                    personController.arriveAtFloor(targetFloor, gameObject);
+                    PersonController personController = person.GetComponent ("PersonController") as PersonController;
+                    personController.arriveAtFloor (targetFloor, gameObject);
                 }
 
-
-
-                foreach (PersonController person in people)
-                {
-                    person.arriveAtFloor(targetFloor, gameObject);
+                foreach (PersonController person in people) {
+                    person.arriveAtFloor (targetFloor, gameObject);
                 }
-
 
             }
         }
 
         if (velocity != 0) {
-            transform.position = new Vector2(transform.position.x, transform.position.y + velocity * Time.deltaTime);
+            transform.position = new Vector2 (transform.position.x, transform.position.y + velocity * Time.deltaTime);
         }
 
-
         int i = 0;
-        foreach (GameObject person in peopleOnBoard)
-        {
-            person.transform.position = (transform.position + GetPositionOffset(i));
+        foreach (GameObject person in peopleOnBoard) {
+            person.transform.position = (transform.position + GetPositionOffset (i));
             i++;
         }
 
+    }
 
+    private void UpdateVelocity () {
+        if (movingUp && velocity < topSpeed) {
+            velocity += acceleration * Time.deltaTime;
+        }
+        if (movingDown && velocity > -topSpeed) {
+            velocity -= acceleration * Time.deltaTime;
+        }
+    }
+
+    private void ProcessInput () {
+        if (Input.GetKeyDown (upKey)) {
+            movingUp = true;
+            stopping = false;
+        }
+        if (Input.GetKeyUp (upKey)) {
+            movingUp = false;
+        }
+
+        if (Input.GetKeyDown (downKey)) {
+            movingDown = true;
+            stopping = false;
+        }
+        if (Input.GetKeyUp (downKey)) {
+            movingDown = false;
+        }
     }
 }

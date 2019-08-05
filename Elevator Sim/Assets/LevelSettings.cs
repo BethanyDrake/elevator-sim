@@ -10,6 +10,7 @@ public class LevelSettings : MonoBehaviour
     public int level;
     public float floorHeight;
     public float rockBottom;
+    public float rockTop;
     public static LevelSettings instance;
     public float squareSize;
 

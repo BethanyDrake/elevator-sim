@@ -734,6 +734,7 @@ MonoBehaviour:
   level: 1
   floorHeight: 1
   rockBottom: -4
+  rockTop: 4
   squareSize: 1
   leftWall: -1.5
   rightWall: 0.5

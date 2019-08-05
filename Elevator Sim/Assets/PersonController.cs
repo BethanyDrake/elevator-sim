@@ -83,6 +83,7 @@ public class PersonController : MonoBehaviour
             LevelSettings.StartWaiting(gameObject, currentFloor);
             targetPosition = LevelSettings.GetWaitPoint(gameObject, currentFloor);
             MoveToTarget(targetPosition, slowSpeed);
+            Debug.Log("missed the elevator!");
 
         }
         else  {
@@ -92,6 +93,7 @@ public class PersonController : MonoBehaviour
                 LightUpTarget(new Vector2(targetElevator.transform.position.x, targetFloor));
             }
             else {
+                Debug.Log("elevator is full!");
                 targetElevator = null;
                 LevelSettings.StartWaiting(gameObject, currentFloor);
                 targetPosition = LevelSettings.GetWaitPoint(gameObject, currentFloor);
