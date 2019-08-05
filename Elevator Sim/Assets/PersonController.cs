@@ -30,6 +30,8 @@ public class PersonController : MonoBehaviour
     SpriteRenderer spriteRenderer;
     void Start()
     {
+        anger = 0;
+        timeWaiting = 0;
         currentFloor = LevelSettings.instance.rockBottom;
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColour = spriteRenderer.color;
@@ -41,6 +43,7 @@ public class PersonController : MonoBehaviour
         }
         MoveToTarget(targetPosition, fastSpeed);
         timeSinceArrived = 0;
+
     }
 
 
@@ -157,6 +160,11 @@ public class PersonController : MonoBehaviour
 
             flashing = true;
             timeSinceFlashed = 0;
+            if (anger > 0)
+            {
+                anger -= 1;
+                ChangeToColorBasedOnAnger();
+            }
             spriteRenderer.color = flashColour;
 
         }
@@ -192,6 +200,17 @@ public class PersonController : MonoBehaviour
 
         transform.position = new Vector2(transform.position.x + direction * Time.deltaTime * speed, transform.position.y);
     }
+
+
+
+    void ChangeToColorBasedOnAnger() {
+        if (anger >=  PeopleController.instance.angerColors.Length) anger = PeopleController.instance.angerColors.Length -1;
+        spriteRenderer.color = PeopleController.instance.angerColors[anger];
+        originalColour = spriteRenderer.color;
+    }
+
+    public int anger;
+    public float timeWaiting;
     void Update()
     {
 
@@ -207,6 +226,17 @@ public class PersonController : MonoBehaviour
                 targetPosition = GetProductiveLocation();
                 MoveToTarget(targetPosition, superSlowSpeed);
             }
+
+        }
+
+         if (targetFloor != currentFloor) {
+             timeWaiting += Time.deltaTime;
+             if(timeWaiting > PeopleController.instance.patienceThreshold)
+             {
+                anger += 1;
+                timeWaiting = 0;
+                ChangeToColorBasedOnAnger();
+             }
 
         }
 

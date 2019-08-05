@@ -5,6 +5,9 @@ using UnityEngine;
 public class PeopleController : MonoBehaviour
 {
     // Start is called before the first frame update
+
+    public static PeopleController instance;
+
     public GameObject personPrefab;
     public float time = 0;
     public float hireRate = 5;
@@ -12,7 +15,9 @@ public class PeopleController : MonoBehaviour
     public int numPeople = 0;
     public List<GameObject> people = new List<GameObject>();
     public ElevatorMove[] elevators = new ElevatorMove[10];
+    public float patienceThreshold;
 
+    public Color[] angerColors = new Color[4];
     public Vector3 spawnPoint;
 
     public void SendEveryoneHome()
@@ -24,6 +29,7 @@ public class PeopleController : MonoBehaviour
     }
     void Start()
     {
+        instance = this;
 
     }
 

@@ -597,7 +597,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 605368b2c3a1a4d6f98143bbdc606208, type: 3}
-  m_Color: {r: 0.7529412, g: 0.3318421, b: 0, a: 1}
+  m_Color: {r: 0.617257, g: 0.9150943, b: 0.8968683, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1032,7 +1032,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 0}
+  m_BackGroundColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1185,6 +1185,12 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  patienceThreshold: 15
+  angerColors:
+  - {r: 0.40000004, g: 0.854902, b: 0.25490198, a: 1}
+  - {r: 0.7803922, g: 0.86274517, b: 0.2784314, a: 1}
+  - {r: 0.9725491, g: 0.8078432, b: 0.27450982, a: 1}
+  - {r: 0.6784314, g: 0.16470589, b: 0.09411766, a: 1}
   spawnPoint: {x: -8, y: -4, z: 0}
 --- !u!4 &1452824373
 Transform:
@@ -1255,7 +1261,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ac97e84004fef4e70810f5c478a4955a, type: 3}
-  m_Color: {r: 0, g: 0.4245283, b: 0.41230875, a: 1}
+  m_Color: {r: 0.30980393, g: 0.627451, b: 0.6901961, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
@@ -1626,7 +1632,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 605368b2c3a1a4d6f98143bbdc606208, type: 3}
-  m_Color: {r: 0.754717, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.9254863, g: 0.7688679, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
